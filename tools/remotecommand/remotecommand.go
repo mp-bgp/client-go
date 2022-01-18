@@ -28,7 +28,53 @@ import (
 	"k8s.io/apimachinery/pkg/util/remotecommand"
 	restclient "k8s.io/client-go/rest"
 	spdy "k8s.io/client-go/transport/spdy"
+	"github.com/sirupsen/logrus"
 )
+
+
+// Allow injection of a logger, to make this thing traceable
+
+var log *logrus.Logger	// inject logger via SetLogger() to activate logging function
+var clog *conditionalLogger // the conditional logger lives here, use this one to log
+
+// we define our own type, which contains a logrus logger type
+type conditionalLogger struct{
+	logrus.Logger
+}
+
+func (c *conditionalLogger) Tracef(format string, args ...interface{}){
+	if log != nil {
+		c.Tracef(format, args)
+	}
+}
+
+func (c *conditionalLogger) Debugf(format string, args ...interface{}){
+	if log != nil {
+		c.Debugf(format, args)
+	}
+}
+
+func (c *conditionalLogger) Infof(format string, args ...interface{}){
+	if log != nil {
+		c.Infof(format, args)
+	}
+}
+
+func (c *conditionalLogger) Warnf(format string, args ...interface{}){
+	if log!= nil {
+		c.Warnf(format, args)
+	}
+}
+
+// TODO: overwrite all other methods
+
+func SetLogger(logger *logrus.Logger) error {
+	if logger != nil {
+		log = logger
+	}
+}
+
+
 
 // StreamOptions holds information pertaining to the current streaming session:
 // input/output streams, if the client is requesting a TTY, and a terminal size queue to
