@@ -43,6 +43,7 @@ type streamProtocolV1 struct {
 var _ streamProtocolHandler = &streamProtocolV1{}
 
 func newStreamProtocolV1(options StreamOptions) streamProtocolHandler {
+	CLog.Debugf("Initializing protocol V1")
 	return &streamProtocolV1{
 		StreamOptions: options,
 	}
