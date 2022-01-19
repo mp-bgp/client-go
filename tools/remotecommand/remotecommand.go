@@ -76,6 +76,7 @@ func SetLogger(logger *logrus.Logger) error {
 	if logger != nil {
 		log = logger
 		CLog = &conditionalLogger{log}
+		CLog.Infof("Initialized logger for package remotecommand")
 	}
 	return nil
 }
