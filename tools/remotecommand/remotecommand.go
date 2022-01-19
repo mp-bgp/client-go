@@ -176,6 +176,7 @@ func (e *streamExecutor) Stream(options StreamOptions) error {
 
 	var streamer streamProtocolHandler
 
+	CLog.Debugf("Stream Protocol Version %d", protocol)
 	switch protocol {
 	case remotecommand.StreamProtocolV4Name:
 		streamer = newStreamProtocolV4(options)
@@ -190,5 +191,6 @@ func (e *streamExecutor) Stream(options StreamOptions) error {
 		streamer = newStreamProtocolV1(options)
 	}
 
+	CLog.Debugf("Calling stream")
 	return streamer.stream(conn)
 }

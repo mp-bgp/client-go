@@ -64,6 +64,7 @@ func (p *streamProtocolV3) createStreams(conn streamCreator) error {
 }
 
 func (p *streamProtocolV3) handleResizes() {
+	CLog.Debugf("someone called handleResise()")
 	if p.resizeStream == nil || p.TerminalSizeQueue == nil {
 		return
 	}
@@ -87,6 +88,7 @@ func (p *streamProtocolV3) handleResizes() {
 }
 
 func (p *streamProtocolV3) stream(conn streamCreator) error {
+	CLog.Debugf("Create Streams")
 	if err := p.createStreams(conn); err != nil {
 		return err
 	}
@@ -95,6 +97,7 @@ func (p *streamProtocolV3) stream(conn streamCreator) error {
 
 	errorChan := watchErrorStream(p.errorStream, &errorDecoderV3{})
 
+	CLog.Debugf("Calling handleResizes()")
 	p.handleResizes()
 
 	p.copyStdin()

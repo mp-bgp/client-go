@@ -38,6 +38,7 @@ type streamProtocolV4 struct {
 var _ streamProtocolHandler = &streamProtocolV4{}
 
 func newStreamProtocolV4(options StreamOptions) streamProtocolHandler {
+	CLog.Debugf("Initializing protocol V4")
 	return &streamProtocolV4{
 		streamProtocolV3: newStreamProtocolV3(options).(*streamProtocolV3),
 	}
