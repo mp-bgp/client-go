@@ -65,6 +65,8 @@ func (p *streamProtocolV3) createStreams(conn streamCreator) error {
 
 func (p *streamProtocolV3) handleResizes() {
 	CLog.Debugf("someone called handleResise()")
+	CLog.Tracef("p.resizeStream: %s", p.resizeStream)
+	CLog.Tracef("p.TerminalSizeQueue: %s", p.TerminalSizeQueue)
 	if p.resizeStream == nil || p.TerminalSizeQueue == nil {
 		return
 	}
