@@ -43,30 +43,31 @@ func init(){
 
 // we define our own type, which contains a logrus logger type
 type conditionalLogger struct {
+	origLogger *logrus.Logger
 	*logrus.Logger
 }
 
 func (c *conditionalLogger) Tracef(format string, args ...interface{}) {
 	if log != nil {
-		c.Tracef(format, args)
+		c.origLogger.Tracef(format, args)
 	}
 }
 
 func (c *conditionalLogger) Debugf(format string, args ...interface{}) {
 	if log != nil {
-		c.Debugf(format, args)
+		c.origLogger.Debugf(format, args)
 	}
 }
 
 func (c *conditionalLogger) Infof(format string, args ...interface{}) {
 	if log != nil {
-		c.Infof(format, args)
+		c.origLogger.Infof(format, args)
 	}
 }
 
 func (c *conditionalLogger) Warnf(format string, args ...interface{}) {
 	if log != nil {
-		c.Warnf(format, args)
+		c.origLogger.Warnf(format, args)
 	}
 }
 
@@ -75,7 +76,7 @@ func (c *conditionalLogger) Warnf(format string, args ...interface{}) {
 func SetLogger(logger *logrus.Logger) error {
 	if logger != nil {
 		log = logger
-		CLog = &conditionalLogger{log}
+		CLog = &conditionalLogger{log, log}
 		CLog.Infof("Initialized logger for package remotecommand")
 	}
 	return nil
