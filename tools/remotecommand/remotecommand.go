@@ -34,7 +34,12 @@ import (
 // Allow injection of a logger, to make this thing traceable
 
 var log *logrus.Logger      // inject logger via SetLogger() to activate logging function
-var clog *conditionalLogger // the conditional logger lives here, use this one to log
+var CLog *conditionalLogger // the conditional logger lives here, use this one to log
+
+// set empty conditional logger
+func init(){
+	CLog = &conditionalLogger{}
+}
 
 // we define our own type, which contains a logrus logger type
 type conditionalLogger struct {
@@ -70,7 +75,7 @@ func (c *conditionalLogger) Warnf(format string, args ...interface{}) {
 func SetLogger(logger *logrus.Logger) error {
 	if logger != nil {
 		log = logger
-		clog = &conditionalLogger{log}
+		CLog = &conditionalLogger{log}
 	}
 	return nil
 }

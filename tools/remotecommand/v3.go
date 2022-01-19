@@ -71,11 +71,14 @@ func (p *streamProtocolV3) handleResizes() {
 
 		encoder := json.NewEncoder(p.resizeStream)
 		for {
+			CLog.Debugf("Calling Next() on terminalsizequeue.")
 			size := p.TerminalSizeQueue.Next()
 			if size == nil {
+				CLog.Errorf("Got empty size.")
 				return
 			}
 			if err := encoder.Encode(&size); err != nil {
+				CLog.Errorf("Unable to encode size.")
 				runtime.HandleError(err)
 			}
 		}
