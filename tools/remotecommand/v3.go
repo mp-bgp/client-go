@@ -50,12 +50,16 @@ func (p *streamProtocolV3) createStreams(conn streamCreator) error {
 	}
 
 	// set up resize stream
+	CLog.Tracef("p.Tty: %s", p.Tty)
 	if p.Tty {
 		headers := http.Header{}
 		headers.Set(v1.StreamType, v1.StreamTypeResize)
 		var err error
+		CLog.Debugf("Creating resizeStream")
+		CLog.Tracef("headers: %s", headers)
 		p.resizeStream, err = conn.CreateStream(headers)
 		if err != nil {
+			CLog.Errorf("Error while creating streams: %s", err.Error())
 			return err
 		}
 	}
